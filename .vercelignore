@@ -1,0 +1,11 @@
+.venv
+.git
+.env*
+**/__pycache__
+.pytest_cache
+data/processed
+data/reports
+data/raw/uploads
+spark-warehouse
+metastore_db
+derby.log
