@@ -3,6 +3,12 @@
 **Air Quality and Pollution Data Analytics Using Big Data Processing**
 *Big Data Analysis mini project · Apache Spark (PySpark) · Parquet · Streamlit · Plotly*
 
+**Deployment links:** [Live dashboard](https://airscope-tushar-e139.vercel.app)
+· [Vercel project](https://vercel.com/tushar-e139/airscope)
+· [Container deployment](https://airscope-ku9imozb1-tushar-e139.vercel.app)
+
+Vercel Deployment Protection is enabled; access may require signing in to Vercel.
+
 AirScope ingests an air-quality dataset with Apache Spark, cleans and validates it
 transparently, stores it as partitioned Parquet, and runs every analysis — trends,
 daily/weekly/seasonal profiles, location comparison, correlation, outlier detection —
@@ -136,8 +142,8 @@ Open **http://localhost:8501**. The first load starts Spark and cleans the data
 ## Vercel deployment
 
 `Dockerfile.vercel` packages the dashboard with Python 3.12 and Java 17 for
-Vercel's container runtime. Import this GitHub repository into Vercel; the
-Dockerfile is detected automatically. The container listens on `PORT` (80 by
+Vercel's container runtime. `vercel.json` explicitly routes requests to the
+dashboard container service. The container listens on `PORT` (80 by
 default) and starts through `scripts/start_vercel.sh`.
 
 The hosted configuration uses one Spark worker thread, a 768 MB JVM heap, and
@@ -146,6 +152,10 @@ processed Parquet, and generated reports are temporary: they are lost when an
 instance is replaced and are not shared across instances. Download exports you
 want to keep. Sessions may reconnect when the hosting function reaches its time
 limit. This deployment is intended for the included small demonstration dataset.
+
+GitHub auto-deployment requires connecting the GitHub account in Vercel's account
+settings and linking `tusharkshirsagar13/AirScope` under the project's Git settings.
+Until then, deploy updates from the linked checkout with `npx vercel --prod`.
 
 ## 8. Using your own dataset
 
