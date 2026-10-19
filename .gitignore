@@ -25,3 +25,4 @@ derby.log
 Thumbs.db
 .vscode/
 .idea/
+.vercel/

@@ -133,6 +133,20 @@ Or double-click / run `scripts\run_app.bat`.
 Open **http://localhost:8501**. The first load starts Spark and cleans the data
 (~15–30 s); later loads re-use the Parquet output.
 
+## Vercel deployment
+
+`Dockerfile.vercel` packages the dashboard with Python 3.12 and Java 17 for
+Vercel's container runtime. Import this GitHub repository into Vercel; the
+Dockerfile is detected automatically. The container listens on `PORT` (80 by
+default) and starts through `scripts/start_vercel.sh`.
+
+The hosted configuration uses one Spark worker thread, a 768 MB JVM heap, and
+a 4 MB upload limit. Local installation keeps the settings above. Hosted uploads,
+processed Parquet, and generated reports are temporary: they are lost when an
+instance is replaced and are not shared across instances. Download exports you
+want to keep. Sessions may reconnect when the hosting function reaches its time
+limit. This deployment is intended for the included small demonstration dataset.
+
 ## 8. Using your own dataset
 
 1. Copy the file into `data/raw/` (or use **Upload a dataset** in the sidebar, ≤ 200 MB;
