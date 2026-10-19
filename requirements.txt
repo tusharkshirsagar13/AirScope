@@ -1,0 +1,13 @@
+# AirScope — Python dependencies (Python 3.10 – 3.13 recommended)
+# Apache Spark also needs a Java runtime: JDK 17 or 21 (see README).
+# Tested together: pyspark 4.2.0, pandas 2.3.3, pyarrow 26.0.0, numpy 2.5.4,
+#                  streamlit 1.66.0, plotly 7.1.0, PyYAML 6.0.3, openpyxl 3.1.5, pytest 9.1.1
+pyspark>=3.5,<5
+pandas>=2.0,<3          # PySpark does not yet fully support pandas 3
+pyarrow>=14
+numpy>=1.24
+streamlit>=1.50
+plotly>=5.20
+PyYAML>=6.0
+openpyxl>=3.1           # Excel (.xlsx) input
+pytest>=8

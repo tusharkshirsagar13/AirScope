@@ -1,0 +1,18 @@
+[theme]
+base = "light"
+primaryColor = "#2E7D74"
+backgroundColor = "#F6F4EF"
+secondaryBackgroundColor = "#EEEAE2"
+textColor = "#24292E"
+font = "sans serif"
+
+[server]
+# Keep in sync with upload.max_upload_mb in config/settings.yaml
+maxUploadSize = 200
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[runner]
+magicEnabled = false

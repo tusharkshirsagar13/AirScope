@@ -1,0 +1,62 @@
+# AirScope — runtime settings
+# All paths are relative to the project root (the folder that contains app.py).
+
+dataset:
+  # Default dataset opened by the dashboard and the CLI pipeline.
+  # Change this (or pick another file in the sidebar) — no source edits needed.
+  path: data/raw/AirQuality.csv
+  # CSV parsing. "auto" = detect from the first lines of the file.
+  delimiter: auto          # auto | "," | ";" | "\t" | "|"
+  decimal: auto            # auto | "." | ","
+  encoding: utf-8
+  # Values that the data publisher uses to mean "no measurement".
+  # The UCI Air Quality dataset tags missing values with -200.
+  missing_sentinels: [-200]
+
+paths:
+  raw_dir: data/raw
+  upload_dir: data/raw/uploads
+  processed_dir: data/processed
+  reports_dir: data/reports
+
+spark:
+  app_name: AirScope
+  master: "local[*]"           # all local CPU cores
+  driver_memory: 2g
+  shuffle_partitions: 8        # small number suits a laptop; raise for big clusters
+  log_level: WARN
+  # Keep the cleaned DataFrame in Spark memory while the dashboard runs
+  # (faster filters; turn off for datasets larger than available RAM).
+  cache_clean_data: true
+
+processing:
+  # Re-use the cleaned Parquet output when the source file and config are unchanged.
+  reuse_processed_parquet: true
+  # Rows whose timestamp cannot be parsed are excluded from time-based analysis.
+  require_timestamp: true
+  # Candidate date / time formats (Spark datetime patterns). The format that
+  # parses the most rows wins; ties are broken by the order below.
+  date_formats: ["dd/MM/yyyy", "yyyy-MM-dd", "MM/dd/yyyy", "dd-MM-yyyy", "yyyy/MM/dd", "dd.MM.yyyy"]
+  time_formats: ["HH.mm.ss", "HH:mm:ss", "HH:mm", "H:mm"]
+  datetime_formats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd HH:mm", "dd/MM/yyyy HH:mm", "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm", "yyyy-MM-dd"]
+  # Label used when a location column exists but a row has no location value.
+  unspecified_location_label: "(unspecified)"
+
+analysis:
+  # Percentile accuracy for Spark's percentile_approx (higher = more exact, slower).
+  percentile_accuracy: 10000
+  # Minimum paired observations required before a correlation is reported.
+  min_correlation_obs: 30
+  # High-measurement (statistical outlier) detection.
+  outlier_method: iqr          # iqr | percentile
+  iqr_multiplier: 1.5          # upper fence = Q3 + k * IQR
+  percentile_threshold: 0.99   # used when outlier_method = percentile
+  top_n: 10                    # rows shown in "top" tables
+  histogram_bins: 40
+  max_table_rows: 1000         # bounded sample shown in the record table
+  # Seasons use meteorological definitions for this hemisphere.
+  hemisphere: north            # north | south
+
+upload:
+  allowed_extensions: [csv, xlsx, xls, json, parquet]
+  max_upload_mb: 200           # keep in sync with .streamlit/config.toml

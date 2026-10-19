@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Generated data (re-created by the pipeline)
+data/processed/*
+!data/processed/README.md
+data/reports/*
+!data/reports/README.md
+data/raw/uploads/
+
+# Spark / tooling
+spark-warehouse/
+metastore_db/
+derby.log
+*.crc
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,180 @@
+# AirScope — column mapping layer
+#
+# Column names in the source file are normalised (lower-case, only letters and
+# digits kept) and compared with the normalised aliases below. Example:
+#   "CO(GT)" -> "cogt",  "PM2.5" -> "pm25",  "PT08.S1(CO)" -> "pt08s1co"
+#
+# Only exact (normalised) matches are accepted — nothing is guessed.
+# If your file uses a different header, add it to the relevant `aliases` list.
+# Columns that match nothing are reported as "unmapped" and are not analysed.
+#
+# kind:
+#   pollutant      – concentration measured by a reference analyser
+#   aqi            – a precomputed index supplied by the data publisher
+#   sensor         – raw (uncalibrated) sensor response, no physical unit
+#   meteorological – weather variable (context, not a pollutant)
+# valid_min / valid_max: plausibility limits. Values outside them are flagged
+# as invalid, reported, and excluded from calculations (never "fixed").
+
+roles:
+  datetime:
+    aliases: [datetime, timestamp, datetimeutc, datetimelocal, recordedat, observationtime, dateandtime]
+  date:
+    aliases: [date, day, obsdate, measurementdate]
+  time:
+    aliases: [time, hour, obstime]
+  location:
+    aliases: [city, location, station, stationname, site, sitename, monitoringstation, area]
+
+measurements:
+  # ---------------- Reference-analyser pollutant concentrations ----------------
+  co:
+    label: CO
+    name: Carbon monoxide
+    aliases: [co, cogt, comgm3, carbonmonoxide]
+    unit: mg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 50
+  nmhc:
+    label: NMHC
+    name: Non-methanic hydrocarbons
+    aliases: [nmhc, nmhcgt]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 5000
+  c6h6:
+    label: C6H6
+    name: Benzene
+    aliases: [c6h6, c6h6gt, benzene]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 500
+  nox:
+    label: NOx
+    name: Nitrogen oxides
+    aliases: [nox, noxgt]
+    unit: ppb
+    kind: pollutant
+    valid_min: 0
+    valid_max: 5000
+  no2:
+    label: NO2
+    name: Nitrogen dioxide
+    aliases: [no2, no2gt]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 2000
+  # Generic pollutants (not present in the supplied UCI file, kept so other
+  # datasets work). Units here are typical defaults — check your source.
+  pm25:
+    label: PM2.5
+    name: Fine particulate matter
+    aliases: [pm25, pm2_5, pm25ugm3]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 2000
+  pm10:
+    label: PM10
+    name: Coarse particulate matter
+    aliases: [pm10, pm10ugm3]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 3000
+  so2:
+    label: SO2
+    name: Sulphur dioxide
+    aliases: [so2, so2ugm3]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 3000
+  o3:
+    label: O3
+    name: Ozone
+    aliases: [o3, ozone, o3ugm3]
+    unit: µg/m³
+    kind: pollutant
+    valid_min: 0
+    valid_max: 1500
+  aqi:
+    label: AQI
+    name: Air Quality Index (as supplied)
+    aliases: [aqi, airqualityindex, aqivalue]
+    unit: index (source scale)
+    kind: aqi
+    valid_min: 0
+    valid_max: 1000
+
+  # ---------------- Metal-oxide sensor responses (UCI dataset) ----------------
+  s1_co:
+    label: S1 (CO sensor)
+    name: Tin-oxide sensor response, nominally CO-targeted
+    aliases: [pt08s1co]
+    unit: sensor response
+    kind: sensor
+    valid_min: 0
+    valid_max: 5000
+  s2_nmhc:
+    label: S2 (NMHC sensor)
+    name: Titania sensor response, nominally NMHC-targeted
+    aliases: [pt08s2nmhc]
+    unit: sensor response
+    kind: sensor
+    valid_min: 0
+    valid_max: 5000
+  s3_nox:
+    label: S3 (NOx sensor)
+    name: Tungsten-oxide sensor response, nominally NOx-targeted
+    aliases: [pt08s3nox]
+    unit: sensor response
+    kind: sensor
+    valid_min: 0
+    valid_max: 5000
+  s4_no2:
+    label: S4 (NO2 sensor)
+    name: Tungsten-oxide sensor response, nominally NO2-targeted
+    aliases: [pt08s4no2]
+    unit: sensor response
+    kind: sensor
+    valid_min: 0
+    valid_max: 5000
+  s5_o3:
+    label: S5 (O3 sensor)
+    name: Indium-oxide sensor response, nominally O3-targeted
+    aliases: [pt08s5o3]
+    unit: sensor response
+    kind: sensor
+    valid_min: 0
+    valid_max: 5000
+
+  # ---------------- Meteorological context ----------------
+  temperature:
+    label: Temperature
+    name: Air temperature
+    aliases: [t, temp, temperature, tempc]
+    unit: °C
+    kind: meteorological
+    valid_min: -50
+    valid_max: 60
+  rh:
+    label: RH
+    name: Relative humidity
+    aliases: [rh, relativehumidity, humidity]
+    unit: "%"
+    kind: meteorological
+    valid_min: 0
+    valid_max: 100
+  ah:
+    label: AH
+    name: Absolute humidity
+    aliases: [ah, absolutehumidity]
+    unit: as reported (unit not stated by source)
+    kind: meteorological
+    valid_min: 0
+    valid_max: 50
